@@ -1,0 +1,35 @@
+<h1>Welcome!</h1>
+<% if flash[:req_login] %>
+	<p style="color:green;"><%= flash[:req_login] %></p>
+<% end %>
+
+<div style="border: 1px solid black; padding: 20px; margin: 20px;">
+	<h4>Register</h4>
+	<form action="/users" method="post">
+		<input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+		First Name: <input type="text" name="user[first_name]"></input>
+		Last Name: <input type="text" name="user[last_name]"></input>
+		Email:<input type="text" name="user[email]"></input>
+		Password:<input type="password" name="user[password]"></input>
+		<input type="submit" value="Register"></input>
+	</form>
+	<% if flash[:reg_errors] %>
+		<% flash[:reg_errors].each do |error| %>
+			<p style="color:red;"><%= error %></p>
+		<% end %>
+	<% end %>
+</div>
+
+<div style="border: 1px solid black; padding: 20px; margin: 20px;">
+	<h4>Login</h4>
+	<form action="/sessions" method="post">
+		<input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+		Email:<input type="text" name="user[email]"></input>
+		Password:<input type="password" name="user[password]"></input>
+		<input type="submit" value="Login"></input>
+	</form>
+
+	<% if flash[:log_error] %>
+		<p style="color:red;"><%= flash[:log_error] %></p>
+	<% end %>
+</div>

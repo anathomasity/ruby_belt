@@ -1,0 +1,49 @@
+<a href="/logout" data-method="delete">Logout</a>
+<h2>Hello, <%= session[:name] %></h2>
+
+
+<h3>All the songs in our hub:</h3>
+
+<table style="width:70%">
+	<tr>
+		<th>Artist</th>
+		<th>Title</th> 
+		<th>N of times Song has been Added</th>
+		<th>Add to Playlist</th>
+	</tr>
+	<%  if @songs %>
+		<% @songs.each do |song| %>
+			<tr>
+				<td><%= song[:artist] %></td>
+				<td><a href="/songs/<%= song[:id] %>"><%= song[:title] %></a></td>
+				<% @sum =  %> 
+				<td><%= Add.where(song_id: song[:id]).all.sum(:times_added) %></td>
+				<td>
+					<form action="adds" method="post">
+						<input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+						<input type="hidden" name="song[user_id]" value="<%=session[:user_id]%>"></input>
+						<input type="hidden" name="song[song_id]" value="<%=song[:id]%>"></input>
+						<input type="submit" value="Add"></input>
+					</form>
+				</td>
+			</tr>
+		<% end %>
+	<% end %>
+</table><br><br><br>
+
+
+<h4>Add a song:</h4><br><br>
+<form action="songs" method="post">
+	<input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+	Title: <input type="text" name="song[title]"></input>
+	Artist: <input type="text" name="song[artist]"></input>
+	<% if flash[:errors] %>
+		<% flash[:errors].each do |error| %>
+			<p style="color:red;"><%= error %></p>
+		<% end %>
+	<% end %>
+	<% if flash[:song] %>
+		<p style="color:green;"><%= flash[:song] %></p>
+	<% end %>
+	<input type="submit" value="Add Song"></input>
+</form><br><br><br>

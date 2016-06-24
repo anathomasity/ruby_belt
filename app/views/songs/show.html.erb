@@ -1,0 +1,24 @@
+<a href="/songs">Dashboard</a>
+<a href="/logout" data-method="delete">Logout</a>
+
+<h4>Others who added <%= @song.artist %> - <%= @song.title %></h4>
+
+
+<table style="width:70%">
+	<tr>
+		<th>Name</th>
+		<th>Times Added</th> 
+	</tr>
+	<%  if @users %>
+		<% @users.each do |user| %>
+			<tr>
+				<td><a href="/users/<%= user.id%>"><%=user.first_name%> <%=user.last_name%></a></td>
+				<% @count = User.find(user).adds.where("song_id = ?", @song.id ).first %>
+				<%if @count%>
+					<td><%=@count.times_added%></td>
+				<%end%>
+			</tr>
+		<% end %>
+	<% end %>
+</table>
+
